@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\3a9b8bec0ed1bc2b2ea599e7e4cd0e63\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f97cf85b0fe70d37a705111dafa6b1b418ea1650">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\70db12e3d9a202e03579f368c470aa3f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="40392f30a601db5675cdf18192aab013d6fee6ec">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\android.arch.persistence.room\common\1.0.0\1cbd3ddc566125293b13af5c0a65bc015476e83c\common-1.0.0.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="1cbd3ddc566125293b13af5c0a65bc015476e83c">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\24.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.8.0.aar\8ebd018809e1bf86eedbc16b453b200f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5ad3911825107d8dd4b017fdecebfd23c08048dd">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\26.1.0\814258103cf26a15fcc26ecce35f5b7d24b73f8\support-annotations-26.1.0.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="0814258103cf26a15fcc26ecce35f5b7d24b73f8">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\android.arch.paging\common\1.0.0-alpha4-1\d30a42ed2acf40ae1f1469d0f4436493633b46ea\common-1.0.0-alpha4-1.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d30a42ed2acf40ae1f1469d0f4436493633b46ea">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\20.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\c73b15b11bb7db79971e7ab9a279c19b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2442771a5590dd4eb4bce00c2e9dca9e22e4c963">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\7df11562fb37ecc1dcfbf389f330ffa9\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="233f60a165ae622c8b36731502ebbda0f65e1930">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\db-framework-1.0.0.aar\ffbacd2b0229cd7626250948aa834dc5\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e44c59a2b380c1c304413901f8dd34245b64ab40">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\25.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\b7c40d8d8c928f20d5655dafd576af6d\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="508f50705b4fde51a16259f29c854201a3044516">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\14.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\cardview-v7-26.1.0.aar\64277de02a51905746a2d4cc7777775e\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b4d6fbbb48b42dd03fd9c5a09b3b7a53266df6ed">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\9894fad7e283177048a359dfc1ab0d52\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6f4138a4e065826cb044d49faea4cfd7191773d1">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\play-services-base-11.8.0.aar\5a53c2d8be0baf15317ac257e1ac224b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="233d88c6f961d2a84758dfe27b7af61318190c7b">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\db-1.0.0.aar\a05a5370507950c10b1d25f404d2e5a1\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="73b7c0cc2de04ff7eb3979d7f48f2a667fce88ca">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\26.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\11a2fc7488d3962eeee8b82b17cb9123\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7cc5473b9cf4ea159a263cd477fb3ecb2987b96">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\21.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.0.3\7d7f60c4783872861222166f6164215f8951c7b1\common-1.0.3.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="7d7f60c4783872861222166f6164215f8951c7b1">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\23.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\ccbae994abfb4748df71191188d17fde\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b12cd9c87c3dfb012a911b6e38d2444ed0a65e1f">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\12.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\6557c7f0287c8fa82c63fc94720d343a\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8d24e1c59cbee887714f11121366282a2fe00251">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\9244fbd4f2d1fb083f40a295e7ff07f7\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="7efef32744ca4a436492d5cf28c08698cc2af256">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.0.0\a2d487452376193fc8c103dd2b9bd5f2b1b44563\common-1.0.0.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a2d487452376193fc8c103dd2b9bd5f2b1b44563">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\22.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.8.0.aar\9b3b8e710422d14c7c62600ac701238f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d2af2ef4d987d753f2e8ee2d1480ab964d5c7273">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\f0e3edbb6029bd4e3cab6672f76ea319\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="7acfe82f9818960690816133001218c52e840175">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\19.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\extensions-1.0.0.aar\e5bfa855737eb7faaaf062ba06dc0cfa\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="0c96ff1484cdde9a52af9f23f9e0d1de70dd5076">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\4d0a1882797bc3936d8f06cbaa4242c1\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0-alpha4-1.aar\c22dfb36ff608967aa84426022e72078\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="511b89b000f33aa68fb5487a18b6e3bb00fa7f55">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\c24ccd7f17c3bcc2668bc07997c80adc\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f428e2fbc9ed0b297e3a3f420e51e6982f66822d">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Andrew\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.8.0.aar\a191085ca7b69105a318c785a97f6bd4\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="19"
+        optimize="true"
+        revision="26.0.2"
+        sha1="601ebd8fa027a3dad924ffa1cb14689ced5aa436">
+        <dex dex="C:\Users\Andrew\AndroidStudioProjects\LocChange\app\build\intermediates\transforms\preDex\release\2.jar" />
+    </item>
+
+</items>
