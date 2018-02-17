@@ -1,25 +1,44 @@
 package studios.gaberlunzie.locchange;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.IBinder;
 import android.os.SystemClock;
+import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,24 +51,31 @@ import java.util.List;
 
 import studios.gaberlunzie.locchange.models.SavedLocation;
 
-public class LocationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+    final int ACCESS_LOCATIONS = 0;
+    final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    final static String[] PERMISSIONS =  {  android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION  };
 
     private final Context context = this;
 
     private GoogleMap mMap;
 
-    final int ACCESS_FINE = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    };
 
     @Override
     public void onBackPressed() {
@@ -70,9 +96,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         LatLng marker = new LatLng(32.746723, -79.969213);
-        mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 15.0f));
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -82,31 +106,11 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         mMap.setOnMapClickListener(mapClickListener);
         mMap.setOnMarkerClickListener(markerClickListener);
 
-        if ( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    ACCESS_FINE );
-        }else{
-            AlertDialog.Builder alert = new AlertDialog.Builder(context);
-
-            alert.setTitle("Set as Mock Location App in Dev Settings before Continuing");
-
-            alert.setMessage("");
-
-            alert.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.dismiss();
-                    initLocation();
-                }
-            });
-
-            alert.show();
-        }
-
-        List<SavedLocation> savedLocations = UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
-        for (SavedLocation location:savedLocations
-             ) {
-            mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getLocationName()));
-            Log.d("DBG", location.getLocationName());
+        if ( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions( this, PERMISSIONS,
+                    ACCESS_LOCATIONS );
+        }else {
+            initLocation();
         }
     }
 
@@ -114,7 +118,74 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     protected void onResume() {
         super.onResume();
 
+        mMap.clear();
+        List<SavedLocation> savedLocations = UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
+        for (SavedLocation location:savedLocations
+                ) {
+            mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getLocationName()));
+        }
         updateLocation();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.location_toolbar, menu);
+
+        // Configure the search info and add any event listeners...
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_search:
+                findPlace();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    // A place has been received; use requestCode to track the request.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 25.0f));
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                Log.i("DBG", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
+
+    public void findPlace() {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+            e.printStackTrace();
+        }
     }
 
     public void updateLocation(){
@@ -125,7 +196,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
             LatLng marker = new LatLng(UserSession.getSavedLocation().getLatitude(), UserSession.getSavedLocation().getLongitude());
             mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 15.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
         }
     }
 
@@ -152,11 +223,22 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
 
                     SavedLocation savedLocation = new SavedLocation(value, latLng);
                     UserSession.addSavedLocation(AppDatabase.getAppDatabase(context), savedLocation);
+                    mMap.addMarker(new MarkerOptions().position(savedLocation.getLatLng()).title(savedLocation.getLocationName()));
                 }
             });
 
             alert.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+
+            alert.setNeutralButton("Go", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String value = "Go";
+                    SavedLocation savedLocation = new SavedLocation(value, latLng);
+                    UserSession.setSavedLocation(savedLocation);
+                    updateLocation();
                 }
             });
 
@@ -182,7 +264,20 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                     }
                 }
             });
+            alert.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context); // Need to change the build to API 19
 
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, marker.getPosition().toString());
+
+                    if (defaultSmsPackageName != null){
+                        sendIntent.setPackage(defaultSmsPackageName);
+                    }
+                    startActivity(sendIntent);
+                }
+            });
             alert.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dialog.dismiss();
@@ -194,33 +289,21 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         }
     };
 
-    LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
         }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
+        return false;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch(requestCode){
-            case ACCESS_FINE:{
+            case ACCESS_LOCATIONS:{
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     initLocation();
                 }

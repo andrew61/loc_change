@@ -30,9 +30,12 @@ import studios.gaberlunzie.locchange.models.SavedLocation;
 public class LocationsActivity extends Activity {
     private final Context context = this;
 
+    public static boolean isWalking = false;
+
     private ListView mListView;
     private Button startBtn;
     private Button stopBtn;
+    private Button walkBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,20 +44,12 @@ public class LocationsActivity extends Activity {
         mListView = (ListView) findViewById(R.id.list);
         stopBtn = (Button) findViewById(R.id.btn_stop);
         startBtn = (Button) findViewById(R.id.btn_start);
+        walkBtn = (Button) findViewById(R.id.btn_walk);
 
         final ArrayList<SavedLocation> savedLocations = (ArrayList<SavedLocation>)UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
 
         LocationsAdapter locationsAdapter = new LocationsAdapter(this, savedLocations, mListView, this);
         mListView.setAdapter(locationsAdapter);
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                SavedLocation savedLocation = savedLocations.get(i);
-//                UserSession.setSavedLocation(savedLocation);
-//
-//                finish();
-//            }
-//        });
 
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +66,42 @@ public class LocationsActivity extends Activity {
                 startService(intent);
             }
         });
+
+        //look for nearby location every 1-3 min
+        walkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isWalking){
+                    isWalking = false;
+                    setWalking();
+                }else{
+                    isWalking = true;
+                    setWalking();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setWalking();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void setWalking(){
+        if(isWalking){
+            walkBtn.setText("Stop Walking");
+        }else{
+            walkBtn.setText("Start Walking");
+        }
+        Intent intent = new Intent(context, LocationService.class);
+        stopService(intent);
+        startService(intent);
     }
 }
 
