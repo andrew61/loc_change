@@ -22,6 +22,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import static studios.gaberlunzie.locchange.LocationsActivity.isWalking;
@@ -55,43 +57,31 @@ public class LocationService extends Service{
         Log.d("DBG", "STARTING SERVICE");
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy( Criteria.ACCURACY_FINE );
-        final String bestProvider = locationManager.getBestProvider( criteria, true );
+//        Criteria criteria = new Criteria();
+//        criteria.setAccuracy( Criteria.ACCURACY_FINE );
+//        final String bestProvider = locationManager.getBestProvider( criteria, true );
 
         if (!canMockLocation(this)) {
             //show alert
             return;
         } else {
-            locationManager.addTestProvider(
-           LocationManager.GPS_PROVIDER,           //name
-           false,                                  //requiresNetwork
-           false,                                  //requiresSatellite
-           false,                                  //requiresCell
-           false,                                  //hasMonetaryCost
-            true,                                   //supportsAltitude
-             true,                                   //supportsSpeed
-              true,                                   //supportsBearing
-               0,                                      //powerRequirement
-                1                        //accuracy
-                 );
-            locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+           addTestProviders(locationManager);
         }
         initLocation();
 
-        if(isWalking){
-            timer = new CountDownTimer(timerLength, 1000) {
-                @Override
-                public void onTick(long l) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    updateLocation(bestProvider);
-                }
-            }.start();
-        }
+//        if(isWalking){
+//            timer = new CountDownTimer(timerLength, 1000) {
+//                @Override
+//                public void onTick(long l) {
+//
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    updateLocation(bestProvider);
+//                }
+//            }.start();
+//        }
     }
 
     @Override
@@ -99,6 +89,56 @@ public class LocationService extends Service{
         super.onDestroy();
         stopUpdate();
         Log.d("DBG", "STOPPING SERVICE");
+    }
+
+    public void addTestProviders(LocationManager locationManager){
+        locationManager.addTestProvider(
+                LocationManager.GPS_PROVIDER,           //name
+                false,                                  //requiresNetwork
+                false,                                  //requiresSatellite
+                false,                                  //requiresCell
+                false,                                  //hasMonetaryCost
+                true,                                   //supportsAltitude
+                true,                                   //supportsSpeed
+                true,                                   //supportsBearing
+                0,                                      //powerRequirement
+                1                        //accuracy
+        );
+        locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+
+        locationManager.addTestProvider(
+                LocationManager.NETWORK_PROVIDER,           //name
+                false,                                  //requiresNetwork
+                false,                                  //requiresSatellite
+                false,                                  //requiresCell
+                false,                                  //hasMonetaryCost
+                true,                                   //supportsAltitude
+                true,                                   //supportsSpeed
+                true,                                   //supportsBearing
+                0,                                      //powerRequirement
+                1                        //accuracy
+        );
+        locationManager.setTestProviderEnabled(LocationManager.NETWORK_PROVIDER, true);
+    }
+
+    public void clearProviderLocation(LocationManager locationManager){
+        locationManager.clearTestProviderLocation(LocationManager.GPS_PROVIDER);
+        locationManager.clearTestProviderLocation(LocationManager.NETWORK_PROVIDER);
+    }
+
+    public void setProviderLocation(Location location, LocationManager locationManager){
+        locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, location);
+        locationManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, location);
+    }
+
+    public void clearProviders(LocationManager locationManager){
+        locationManager.clearTestProviderEnabled(LocationManager.GPS_PROVIDER);
+        locationManager.clearTestProviderLocation(LocationManager.GPS_PROVIDER);
+        locationManager.removeTestProvider(LocationManager.GPS_PROVIDER);
+
+        locationManager.clearTestProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        locationManager.clearTestProviderLocation(LocationManager.NETWORK_PROVIDER);
+        locationManager.removeTestProvider(LocationManager.NETWORK_PROVIDER);
     }
 
     public void updateSavedLocation(){
@@ -115,9 +155,7 @@ public class LocationService extends Service{
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             final LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-            locationManager.clearTestProviderEnabled(LocationManager.GPS_PROVIDER);
-            locationManager.clearTestProviderLocation(LocationManager.GPS_PROVIDER);
-            locationManager.removeTestProvider(LocationManager.GPS_PROVIDER);
+            clearProviders(locationManager);
         }
     }
 
@@ -133,20 +171,18 @@ public class LocationService extends Service{
         updateSavedLocation();
         if ( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
 
-            if(useBestProvider()){
-                locationManager.requestLocationUpdates(bestProvider, 50, 0, gpsLocationListener);
-            }else{
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50, 0, gpsLocationListener);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 50, 0, wifiLocationListener);
-            }
+//            if(useBestProvider()){
+//                locationManager.requestLocationUpdates(bestProvider, 50, 0, gpsLocationListener);
+//            }else{
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50, 0, gpsLocationListener);
+//            }
 
             if(locationManager.getProvider(MY_GPS_PROVIDER) != null){
                 locationManager.removeTestProvider(MY_GPS_PROVIDER);
             }
 
             locationManager.addTestProvider(MY_GPS_PROVIDER, true, false, false, false, true,true, true, Criteria.POWER_LOW, Criteria.ACCURACY_FINE);
-            locationManager.requestLocationUpdates(MY_GPS_PROVIDER, 50, 0, mockLocationListener);
-
+//            locationManager.requestLocationUpdates(MY_GPS_PROVIDER, 50, 0, mockLocationListener);
 
             if(useBestProvider()) {
                 Location bestLocation = new Location(bestProvider);
@@ -156,7 +192,7 @@ public class LocationService extends Service{
                     bestLocation.setLongitude(longitude);
 
                     locationManager.clearTestProviderLocation(MY_GPS_PROVIDER);
-                    locationManager.clearTestProviderLocation(bestProvider);
+                    clearProviderLocation(locationManager);
 
                     latitude = latitude - .0008;
                 }else{
@@ -169,42 +205,29 @@ public class LocationService extends Service{
                 bestLocation.setAccuracy(accuracy);
 
                 locationManager.setTestProviderLocation(MY_GPS_PROVIDER, bestLocation);
-                locationManager.setTestProviderLocation(bestProvider, bestLocation);
+                setProviderLocation(bestLocation, locationManager);
             }else{
                 Location gpsLocation = new Location(LocationManager.GPS_PROVIDER);
-                Location wifiLocation = new Location(LocationManager.NETWORK_PROVIDER);
 
                 if(isWalking){
                     gpsLocation.setLatitude(latitude);
                     gpsLocation.setLongitude(longitude);
 
-                    wifiLocation.setLatitude(latitude);
-                    wifiLocation.setLongitude(latitude);
-
                     locationManager.clearTestProviderLocation(MY_GPS_PROVIDER);
-                    locationManager.clearTestProviderLocation(LocationManager.GPS_PROVIDER);
-                    locationManager.clearTestProviderLocation(LocationManager.NETWORK_PROVIDER);
+                    clearProviderLocation(locationManager);
 
                     latitude = latitude - .0008;
                 }else{
                     gpsLocation.setLatitude(latitude);
                     gpsLocation.setLongitude(longitude);
-
-                    wifiLocation.setLatitude(latitude);
-                    wifiLocation.setLongitude(latitude);
                 }
 
                 gpsLocation.setTime(System.currentTimeMillis());
                 gpsLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
                 gpsLocation.setAccuracy(accuracy);
 
-                wifiLocation.setTime(System.currentTimeMillis());
-                wifiLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-                wifiLocation.setAccuracy(accuracy);
-
                 locationManager.setTestProviderLocation(MY_GPS_PROVIDER, gpsLocation);
-                locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, gpsLocation);
-                locationManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, wifiLocation);
+                setProviderLocation(gpsLocation, locationManager);
             }
 
         }
@@ -237,7 +260,8 @@ public class LocationService extends Service{
                bestLocation.setAccuracy(accuracy);
 
                locationManager.setTestProviderLocation(MY_GPS_PROVIDER, bestLocation);
-               locationManager.setTestProviderLocation(bestProvider, bestLocation);
+               setProviderLocation(bestLocation, locationManager);
+//               locationManager.setTestProviderLocation(bestProvider, bestLocation);
            }else {
                Location gpsLocation = new Location(LocationManager.GPS_PROVIDER);
                Location wifiLocation = new Location(LocationManager.NETWORK_PROVIDER);
@@ -266,8 +290,7 @@ public class LocationService extends Service{
                wifiLocation.setAccuracy(accuracy);
 
                locationManager.setTestProviderLocation(MY_GPS_PROVIDER, gpsLocation);
-               locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, gpsLocation);
-               locationManager.setTestProviderLocation(LocationManager.NETWORK_PROVIDER, wifiLocation);
+               setProviderLocation(gpsLocation, locationManager);
            }
 
         }else{

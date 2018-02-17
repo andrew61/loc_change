@@ -112,19 +112,27 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
         }else {
             initLocation();
         }
+
+        List<SavedLocation> savedLocations = UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
+        for (SavedLocation location:savedLocations
+                ) {
+            mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getLocationName()));
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mMap.clear();
-        List<SavedLocation> savedLocations = UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
-        for (SavedLocation location:savedLocations
-                ) {
-            mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getLocationName()));
+        if(mMap != null){
+            mMap.clear();
+            List<SavedLocation> savedLocations = UserSession.getSavedLocations(AppDatabase.getAppDatabase(this));
+            for (SavedLocation location:savedLocations
+                    ) {
+                mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getLocationName()));
+            }
+            updateLocation();
         }
-        updateLocation();
     }
 
     @Override
@@ -194,9 +202,9 @@ public class LocationActivity extends AppCompatActivity implements OnMapReadyCal
             stopService(intent);
             startService(intent);
 
-            LatLng marker = new LatLng(UserSession.getSavedLocation().getLatitude(), UserSession.getSavedLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+//            LatLng marker = new LatLng(UserSession.getSavedLocation().getLatitude(), UserSession.getSavedLocation().getLongitude());
+//            mMap.addMarker(new MarkerOptions().position(marker).title("Marker"));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
         }
     }
 
